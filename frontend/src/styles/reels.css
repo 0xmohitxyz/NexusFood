@@ -98,6 +98,51 @@
 }
 
 .reel-btn:hover { background: var(--color-accent-hover); }
+
+/* Actions sidebar (Like, Save, Comment) */
+.reel-actions {
+  position: absolute;
+  right: var(--space-3);
+  bottom: calc(env(safe-area-inset-bottom, 0) + 80px); /* Above bottom nav */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  pointer-events: auto; /* Allow interaction */
+  z-index: 10;
+}
+
+.reel-action-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.reel-action {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reel-action:active { transform: scale(0.9); }
+.reel-action svg { stroke-width: 2.5px; }
+
+.reel-action__count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
 .reel-btn:active { transform: translateY(1px); }
 .reel-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 

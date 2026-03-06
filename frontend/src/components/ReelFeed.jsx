@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import CommentsSheet from './CommentsSheet'
 
 // Reusable feed for vertical reels
 // Props:
-// - items: Array of video items { _id, video, description, likeCount, savesCount, commentsCount, comments, foodPartner }
+// - items: Array of video items { _id, video, description, likeCount, savesCount, commentCount, comments, foodPartner }
 // - onLike: (item) => void | Promise<void>
 // - onSave: (item) => void | Promise<void>
+// - onCommentUpdate: (itemId, newCount) => void
 // - emptyMessage: string
-const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' }) => {
+const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 'No videos yet.' }) => {
   const videoRefs = useRef(new Map())
+  const [activeCommentReelId, setActiveCommentReelId] = useState(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -86,12 +89,16 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
                 </div>
 
                 <div className="reel-action-group">
-                  <button className="reel-action" aria-label="Comments">
+                  <button 
+                    className="reel-action" 
+                    aria-label="Comments"
+                    onClick={() => setActiveCommentReelId(item._id)}
+                  >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
                     </svg>
                   </button>
-                  <div className="reel-action__count">{item.commentsCount ?? (Array.isArray(item.comments) ? item.comments.length : 0)}</div>
+                  <div className="reel-action__count">{item.commentCount ?? item.commentsCount ?? 0}</div>
                 </div>
               </div>
 
@@ -105,6 +112,19 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
           </section>
         ))}
       </div>
+
+      <CommentsSheet 
+        isOpen={!!activeCommentReelId} 
+        onClose={() => setActiveCommentReelId(null)} 
+        foodId={activeCommentReelId}
+        onCommentAdded={() => {
+            if (onCommentUpdate) {
+                const item = items.find(i => i._id === activeCommentReelId);
+                const currentCount = item?.commentCount ?? item?.commentsCount ?? 0;
+                onCommentUpdate(activeCommentReelId, currentCount + 1);
+            }
+        }}
+      />
     </div>
   )
 }

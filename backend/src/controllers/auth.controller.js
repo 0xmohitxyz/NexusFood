@@ -95,6 +95,26 @@ function logoutUser(req, res) {
     });
 }
 
+function getUserProfile(req, res) {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Not authenticated"
+            });
+        }
+        
+        res.status(200).json({
+            user: {
+                _id: req.user._id,
+                fullName: req.user.fullName,
+                email: req.user.email
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 async function registerFoodPartner(req, res) {
 
@@ -200,5 +220,6 @@ module.exports = {
     logoutUser,
     registerFoodPartner,
     loginFoodPartner,
-    logoutFoodPartner
+    logoutFoodPartner,
+    getUserProfile
 }

@@ -3,6 +3,7 @@ const foodModel = require('../models/food.model');
 const storageService = require('../services/storage.service');
 const likeModel = require("../models/likes.model")
 const saveModel = require("../models/save.model")
+const commentModel = require("../models/comment.model")
 const { v4: uuid } = require("uuid")
 
 
@@ -130,11 +131,53 @@ async function getSaveFood(req, res) {
 
 }
 
+async function commentFood(req, res) {
+    const { foodId, text } = req.body;
+    const user = req.user;
+
+    if (!text || !text.trim()) {
+        return res.status(400).json({ message: "Comment text is required" });
+    }
+
+    const comment = await commentModel.create({
+        user: user._id,
+        food: foodId,
+        text: text
+    });
+
+    await foodModel.findByIdAndUpdate(foodId, {
+        $inc: { commentCount: 1 }
+    });
+    
+    // Populate user to return displaying info
+    await comment.populate('user', 'fullName email');
+
+    res.status(201).json({
+        message: "Comment added successfully",
+        comment
+    });
+}
+
+async function getComments(req, res) {
+    const { foodId } = req.params;
+
+    const comments = await commentModel.find({ food: foodId })
+        .populate('user', 'fullName email')
+        .sort({ createdAt: -1 }); // Newest first
+
+    res.status(200).json({
+        message: "Comments retrieved successfully",
+        comments
+    });
+}
+
 
 module.exports = {
     createFood,
     getFoodItems,
     likeFood,
     saveFood,
-    getSaveFood
+    getSaveFood,
+    commentFood,
+    getComments
 }

@@ -13,14 +13,14 @@ const FoodPartnerLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/food-partner/login`, {
       email,
       password
     }, { withCredentials: true });
 
     console.log(response.data);
-
-    navigate("/create-food"); // Redirect to create food page after login
+    localStorage.setItem("userType", "food-partner");
+    navigate("/"); // Redirect to home page after login
 
   };
 

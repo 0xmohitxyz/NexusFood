@@ -18,7 +18,7 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    axios.post("http://localhost:3000/api/auth/food-partner/register", {
+    axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/food-partner/register`, {
       name:businessName,
       contactName,
       phone,
@@ -28,7 +28,8 @@ const FoodPartnerRegister = () => {
     }, { withCredentials: true })
       .then(response => {
         console.log(response.data);
-        navigate("/create-food"); // Redirect to create food page after successful registration
+        localStorage.setItem("userType", "food-partner");
+        navigate("/"); // Redirect to home page after successful registration
       })
       .catch(error => {
         console.error("There was an error registering!", error);

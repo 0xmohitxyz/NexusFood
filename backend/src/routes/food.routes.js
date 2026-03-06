@@ -39,6 +39,16 @@ router.get('/save',
     foodController.getSaveFood
 )
 
+router.post('/comment',
+    authMiddleware.authUserMiddleware,
+    foodController.commentFood
+)
+
+router.get('/comments/:foodId',
+    authMiddleware.authUserMiddleware,
+    foodController.getComments
+)
+
 
 
 module.exports = router

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const likeSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -10,9 +10,13 @@ const likeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'food',
         required: true
+    },
+    text: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model('like', likeSchema);
+module.exports = mongoose.model('Comment', commentSchema);

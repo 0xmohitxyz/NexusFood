@@ -3,6 +3,10 @@ import { NavLink } from 'react-router-dom'
 import '../styles/bottom-nav.css'
 
 const BottomNav = () => {
+  const isFoodPartner = localStorage.getItem("userType") === "food-partner";
+  const profileLink = isFoodPartner ? "/create-food" : "/profile";
+  const profileLabel = isFoodPartner ? "Create Food" : "Profile";
+  
   return (
     <nav className="bottom-nav" role="navigation" aria-label="Bottom">
       <div className="bottom-nav__inner">
@@ -25,6 +29,28 @@ const BottomNav = () => {
             </svg>
           </span>
           <span className="bottom-nav__label">Saved</span>
+        </NavLink>
+
+        <NavLink to={profileLink} className={({ isActive }) => `bottom-nav__item ${isActive ? 'is-active' : ''}`}>
+          <span className="bottom-nav__icon" aria-hidden="true">
+            {isFoodPartner ? (
+                // Add icon or other icon
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    <path d="M12 8v8"/>
+                    <path d="M8 12h8"/>
+                 </svg>
+            ) : (
+                <>
+                {/* user icon */}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+                </svg>
+                </>
+            )}
+          </span>
+          <span className="bottom-nav__label">{profileLabel}</span>
         </NavLink>
       </div>
     </nav>

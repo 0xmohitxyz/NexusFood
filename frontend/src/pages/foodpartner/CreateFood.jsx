@@ -9,9 +9,20 @@ const CreateFood = () => {
     const [ videoFile, setVideoFile ] = useState(null);
     const [ videoURL, setVideoURL ] = useState('');
     const [ fileError, setFileError ] = useState('');
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
     const fileInputRef = useRef(null);
 
     const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/food-partner/logout`, { withCredentials: true });
+            localStorage.removeItem("userType");
+            navigate("/food-partner/login");
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
 
     useEffect(() => {
         if (!videoFile) {
@@ -49,6 +60,7 @@ const CreateFood = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         const formData = new FormData();
 
@@ -56,14 +68,18 @@ const CreateFood = () => {
         formData.append('description', description);
         formData.append("mama", videoFile);
 
-        const response = await axios.post("http://localhost:3000/api/food", formData, {
-            withCredentials: true,
-        })
-
-        console.log(response.data);
-        navigate("/"); // Redirect to home or another page after successful creation
-        // Optionally reset
-        // setName(''); setDescription(''); setVideoFile(null);
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/food`, formData, {
+                withCredentials: true,
+            })
+    
+            console.log(response.data);
+            navigate("/"); // Redirect to home or another page after successful creation
+        } catch (error) {
+            console.error("Error uploading food", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const isDisabled = useMemo(() => !name.trim() || !videoFile, [ name, videoFile ]);
@@ -73,6 +89,12 @@ const CreateFood = () => {
             <div className="create-food-card">
                 <header className="create-food-header">
                     <h1 className="create-food-title">Create Food</h1>
+                    <button 
+                        onClick={handleLogout} 
+                        className="logout-btn-header"
+                    >
+                        Logout
+                    </button>
                     <p className="create-food-subtitle">Upload a short video, give it a name, and add a description.</p>
                 </header>
 
@@ -156,8 +178,15 @@ const CreateFood = () => {
                     </div>
 
                     <div className="form-actions">
-                        <button className="btn-primary" type="submit" disabled={isDisabled}>
-                            Save Food
+                        <button className="btn-primary" type="submit" disabled={isDisabled || isSubmitting}>
+                            {isSubmitting ? (
+                                <span className="btn-content-loading">
+                                    <svg className="spinner loader-icon" viewBox="0 0 50 50">
+                                        <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" strokeWidth="5"></circle>
+                                    </svg>
+                                    Saving...
+                                </span>
+                            ) : "Save Food"}
                         </button>
                     </div>
                 </form>
