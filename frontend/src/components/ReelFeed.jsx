@@ -12,6 +12,18 @@ import CommentsSheet from './CommentsSheet'
 const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 'No videos yet.' }) => {
   const videoRefs = useRef(new Map())
   const [activeCommentReelId, setActiveCommentReelId] = useState(null);
+  const [animatingId, setAnimatingId] = useState({ id: null, type: null });
+  const [progress, setProgress] = useState({});
+
+  const handleTimeUpdate = (id, e) => {
+    const { currentTime, duration } = e.target;
+    setProgress(prev => ({ ...prev, [id]: (currentTime / duration) * 100 }));
+  };
+
+  const triggerAnimation = (id, type) => {
+    setAnimatingId({ id, type });
+    setTimeout(() => setAnimatingId({ id: null, type: null }), 400);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,19 +75,31 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
               muted
               playsInline
               loop
+              onTimeUpdate={(e) => handleTimeUpdate(item._id, e)}
               preload="metadata"
             />
+
+            {/* Progress Bar */}
+            <div className="reel-progress-container">
+                <div 
+                    className="reel-progress-bar" 
+                    style={{ width: `${progress[item._id] || 0}%` }}
+                />
+            </div>
 
             <div className="reel-overlay">
               <div className="reel-overlay-gradient" aria-hidden="true" />
               <div className="reel-actions">
                 <div className="reel-action-group">
                   <button
-                    onClick={onLike ? () => onLike(item) : undefined}
-                    className="reel-action"
+                    onClick={() => {
+                        triggerAnimation(item._id, 'like');
+                        if (onLike) onLike(item);
+                    }}
+                    className={`reel-action ${animatingId.id === item._id && animatingId.type === 'like' ? 'animate-pop' : ''}`}
                     aria-label="Like"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill={animatingId.id === item._id && animatingId.type === 'like' ? "var(--color-accent)" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                     </svg>
                   </button>
@@ -84,11 +108,14 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
 
                 <div className="reel-action-group">
                   <button
-                    className="reel-action"
-                    onClick={onSave ? () => onSave(item) : undefined}
+                    className={`reel-action ${animatingId.id === item._id && animatingId.type === 'save' ? 'animate-bounce' : ''}`}
+                    onClick={() => {
+                        triggerAnimation(item._id, 'save');
+                        if (onSave) onSave(item);
+                    }}
                     aria-label="Bookmark"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill={animatingId.id === item._id && animatingId.type === 'save' ? "var(--color-accent)" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
                     </svg>
                   </button>
@@ -97,9 +124,12 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
 
                 <div className="reel-action-group">
                   <button 
-                    className="reel-action" 
+                    className={`reel-action ${animatingId.id === item._id && animatingId.type === 'comment' ? 'animate-click' : ''}`} 
                     aria-label="Comments"
-                    onClick={() => setActiveCommentReelId(item._id)}
+                    onClick={() => {
+                        triggerAnimation(item._id, 'comment');
+                        setActiveCommentReelId(item._id);
+                    }}
                   >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
@@ -110,6 +140,10 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
               </div>
 
               <div className="reel-content">
+                <div className="reel-user-info">
+                    <h3 className="reel-username">{item.partnerId?.name || 'Partner'}</h3>
+                    <button className="reel-follow-btn">Follow</button>
+                </div>
                 <p className="reel-description" title={item.description}>{item.description}</p>
                 {item.foodPartner && (
                   <Link className="reel-btn" to={"/food-partner/" + item.foodPartner} aria-label="Visit store">Visit store</Link>

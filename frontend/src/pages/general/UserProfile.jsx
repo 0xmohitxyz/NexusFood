@@ -51,9 +51,6 @@ const UserProfile = () => {
         <div className="profile-page">
             <header className="profile-header">
                 <div className="profile-meta">
-                    <div className="profile-avatar-placeholder">
-                         {user?.fullName?.charAt(0).toUpperCase()}
-                    </div>
                     <div className="profile-info">
                         <h1 className="profile-name">{user?.fullName}</h1>
                         <p className="profile-email">{user?.email}</p>

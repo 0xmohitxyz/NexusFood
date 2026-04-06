@@ -32,7 +32,17 @@
 
 .bottom-nav__item.is-active { color: var(--color-accent); }
 
-.bottom-nav__icon { line-height: 0; }
+.bottom-nav__item:active .bottom-nav__icon {
+  transform: scale(0.85);
+  transition: transform 0.1s ease;
+}
+
+.bottom-nav__item.is-active .bottom-nav__icon {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--color-accent) 30%, transparent));
+}
+
+.bottom-nav__icon { line-height: 0; transition: transform 0.2s ease, filter 0.2s ease; }
 
 .bottom-nav__label { font-size: 12px; }
 

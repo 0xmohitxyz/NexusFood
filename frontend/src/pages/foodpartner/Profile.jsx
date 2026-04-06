@@ -80,10 +80,6 @@ const Profile = () => {
             <header className="profile-header">
                 <button onClick={() => navigate(-1)} className="back-btn">&larr; Back</button>
                 <div className="profile-meta">
-                    <div className="profile-avatar-placeholder">
-                        {profile.name ? profile.name.charAt(0).toUpperCase() : 'P'}
-                    </div>
-                   
                    <div className="profile-info">
                        <h1 className="profile-business">{profile.name}</h1>
                        <p className="profile-address">{profile.address}</p>

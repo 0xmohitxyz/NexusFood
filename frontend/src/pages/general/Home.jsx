@@ -50,17 +50,35 @@ const Home = () => {
         }
     }
 
+    const categories = ["All", "Spicy", "Dessert", "Healthy", "Beverages", "Street Food"];
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
     const handleCommentUpdate = (foodId, newCount) => {
         setVideos((prev) => prev.map((v) => v._id === foodId ? { ...v, commentCount: newCount } : v));
     }
 
     return (
-        <ReelFeed
-            items={videos}
-            onLike={likeVideo}
-            onSave={saveVideo} 
-            onCommentUpdate={handleCommentUpdate}
-        />
+        <div style={{ position: 'relative', height: '100%' }}>
+            {/* Category Chips Bar */}
+            <div className="category-bar">
+                {categories.map(cat => (
+                    <button 
+                        key={cat} 
+                        className={`category-chip ${selectedCategory === cat ? 'is-active' : ''}`}
+                        onClick={() => setSelectedCategory(cat)}
+                    >
+                        {cat}
+                    </button>
+                ))}
+            </div>
+
+            <ReelFeed
+                items={videos.filter(v => selectedCategory === "All" || v.category === selectedCategory)}
+                onLike={likeVideo}
+                onSave={saveVideo} 
+                onCommentUpdate={handleCommentUpdate}
+            />
+        </div>
     )
 }
 

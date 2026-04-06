@@ -84,3 +84,31 @@ a:hover, a:focus-visible { color: var(--color-accent-hover); }
   border-color: var(--color-accent);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
+
+/* Animations */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes click-shrink {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.animate-pop { animation: pop 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+.animate-bounce { animation: bounce 0.4s ease; }
+.animate-click { animation: click-shrink 0.15s ease; }
+
+/* Apply tactile feedback to all interactive elements globally */
+button:active, a:active, .clickable:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
