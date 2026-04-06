@@ -91,7 +91,7 @@ const CreateFood = () => {
                     <h1 className="create-food-title">Create Food</h1>
                     <button 
                         onClick={handleLogout} 
-                        className="logout-btn-header"
+                        className="btn-logout"
                     >
                         Logout
                     </button>

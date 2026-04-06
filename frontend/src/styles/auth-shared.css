@@ -19,15 +19,47 @@
 
 .auth-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-6) var(--space-6) var(--space-5);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
+  padding: var(--space-8) var(--space-10);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.auth-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-nav-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-base);
+}
+
+.auth-nav-link:hover, .auth-nav-link.active {
+  color: var(--color-accent);
+}
+
+.auth-choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .auth-card header { text-align: center; }
@@ -65,15 +97,15 @@ form.auth-form { display: flex; flex-direction: column; gap: var(--space-4); }
   border-radius: var(--radius-sm);
   outline: none;
   color: var(--color-text);
-  transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+  transition: all var(--transition-base);
   width: 100%;
   min-width: 0; /* allow shrinking inside flex parent */
 }
-
-.field-group input:focus-visible {
+.auth-form input:focus {
+  outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 55%, transparent);
   background: var(--color-surface);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 15%, transparent);
 }
 
 .two-col { display: flex; gap: var(--space-4); }
@@ -100,6 +132,30 @@ button.auth-submit {
 button.auth-submit:hover { background: var(--color-accent-hover); }
 button.auth-submit:active { transform: translateY(1px); }
 button.auth-submit:focus-visible { outline: 2px solid var(--color-accent-hover); outline-offset: 2px; }
+
+.auth-submit-secondary {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 12px 16px;
+  font: inherit;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  letter-spacing: .5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.auth-submit-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 
 .auth-alt-action {
   text-align: center;

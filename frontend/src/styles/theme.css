@@ -1,20 +1,20 @@
 /* CSS Theme Variables (Light & Dark via system preference) */
 :root {
-  --color-bg: #f9fafb;
+  --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-alt: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-danger: #dc2626;
+  --color-surface-alt: #fff7ed;
+  --color-border: #fed7aa;
+  --color-text: #431407;
+  --color-text-secondary: #9a3412;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-danger: #ef4444;
 
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 8px;
 
-  --font-stack: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-stack: 'Outfit', system-ui, -apple-system, sans-serif;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -32,14 +32,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f172a; /* slate-900 */
-    --color-surface: #1e293b; /* slate-800 */
-    --color-surface-alt: #24324a; /* custom */
-    --color-border: #334155; /* slate-700 */
-    --color-text: #f1f5f9; /* slate-100 */
-    --color-text-secondary: #94a3b8; /* slate-400 */
-    --color-accent: #3b82f6; /* blue-500 */
-    --color-accent-hover: #60a5fa; /* blue-400 */
+    --color-bg: #1c1917; /* stone-900 */
+    --color-surface: #292524; /* stone-800 */
+    --color-surface-alt: #44403c; /* stone-700 */
+    --color-border: #57534e; /* stone-600 */
+    --color-text: #fafaf9; /* stone-50 */
+    --color-text-secondary: #d6d3d1; /* stone-300 */
+    --color-accent: #fb923c; /* orange-400 */
+    --color-accent-hover: #fdba74; /* orange-300 */
     --color-danger: #f87171; /* red-400 */
     --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
     --shadow-md: 0 4px 18px -4px rgba(0,0,0,.5),0 2px 6px -2px rgba(0,0,0,.4);
@@ -64,3 +64,23 @@ a {
 a:hover, a:focus-visible { color: var(--color-accent-hover); }
 
 ::selection { background: var(--color-accent); color: #fff; }
+
+/* Global Button Styles */
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 0.85rem;
+}
+
+.btn-logout:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}

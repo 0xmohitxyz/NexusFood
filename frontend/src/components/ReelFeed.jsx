@@ -43,7 +43,14 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
       <div className="reels-feed" role="list">
         {items.length === 0 && (
           <div className="empty-state">
-            <p>{emptyMessage}</p>
+            <div className="empty-state-icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 12H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                <line x1="6" y1="16" x2="6.01" y2="16" />
+                <line x1="10" y1="16" x2="10.01" y2="16" />
+              </svg>
+            </div>
+            <p className="empty-state-text">{emptyMessage}</p>
           </div>
         )}
 

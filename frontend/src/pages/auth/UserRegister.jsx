@@ -39,8 +39,11 @@ const UserRegister = () => {
                     <h1 id="user-register-title" className="auth-title">Create your account</h1>
                     <p className="auth-subtitle">Join to explore and enjoy delicious meals.</p>
                 </header>
-                <nav className="auth-alt-action" style={{ marginTop: '-4px' }}>
-                    <strong style={{ fontWeight: 600 }}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
+                <nav className="auth-nav">
+                    <span>Join as:</span>
+                    <Link to="/user/register" className="auth-nav-link active">User</Link>
+                    <span>•</span>
+                    <Link to="/food-partner/register" className="auth-nav-link">Food partner</Link>
                 </nav>
                 <form className="auth-form" onSubmit={handleSubmit} noValidate>
                     <div className="two-col">

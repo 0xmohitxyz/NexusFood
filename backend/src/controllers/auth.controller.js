@@ -1,5 +1,6 @@
 const userModel = require("../models/user.model")
 const foodPartnerModel = require("../models/foodpartner.model")
+const Follow = require("../models/follow.model")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -98,7 +99,7 @@ function logoutUser(req, res) {
     });
 }
 
-function getUserProfile(req, res) {
+async function getUserProfile(req, res) {
     try {
         if (!req.user) {
             return res.status(401).json({
@@ -106,11 +107,19 @@ function getUserProfile(req, res) {
             });
         }
         
+        const followerCount = await Follow.countDocuments({ following: req.user._id, followingModel: 'user' });
+        const followingCount = await Follow.countDocuments({ follower: req.user._id, followerModel: 'user' });
+
         res.status(200).json({
             user: {
                 _id: req.user._id,
                 fullName: req.user.fullName,
-                email: req.user.email
+                email: req.user.email,
+                joinedAt: req.user.createdAt,
+                stats: {
+                    followers: followerCount,
+                    following: followingCount
+                }
             }
         });
     } catch (error) {
