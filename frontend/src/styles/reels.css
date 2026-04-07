@@ -81,19 +81,20 @@
 
 .reel-progress-container {
   position: absolute;
-  bottom: 0px;
+  bottom: calc(env(safe-area-inset-bottom, 0) + 56px); /* Above bottom nav */
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2.5px;
   background: rgba(255, 255, 255, 0.1);
-  z-index: 20;
+  z-index: 30;
+  pointer-events: none;
 }
 
 .reel-progress-bar {
   height: 100%;
   background: var(--color-accent);
-  transition: width 0.1s linear;
-  box-shadow: 0 0 8px var(--color-accent);
+  transition: width 0.15s linear;
+  box-shadow: 0 0 12px var(--color-accent);
 }
 
 /* Overlay: content sits on top of video */
@@ -154,6 +155,16 @@
 .reel-follow-btn:hover {
   background: #fff;
   color: #000;
+}
+
+.reel-follow-btn.is-following {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: transparent;
+  color: #fff;
+}
+
+.reel-follow-btn.is-following:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .reel-description {

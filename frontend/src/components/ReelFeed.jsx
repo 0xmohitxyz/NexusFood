@@ -9,7 +9,7 @@ import CommentsSheet from './CommentsSheet'
 // - onSave: (item) => void | Promise<void>
 // - onCommentUpdate: (itemId, newCount) => void
 // - emptyMessage: string
-const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 'No videos yet.' }) => {
+const ReelFeed = ({ items = [], onLike, onSave, onFollow, onCommentUpdate, emptyMessage = 'No videos yet.' }) => {
   const videoRefs = useRef(new Map())
   const [activeCommentReelId, setActiveCommentReelId] = useState(null);
   const [animatingId, setAnimatingId] = useState({ id: null, type: null });
@@ -99,7 +99,7 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
                     className={`reel-action ${animatingId.id === item._id && animatingId.type === 'like' ? 'animate-pop' : ''}`}
                     aria-label="Like"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill={animatingId.id === item._id && animatingId.type === 'like' ? "var(--color-accent)" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill={(animatingId.id === item._id && animatingId.type === 'like') || item.isLiked ? "var(--color-accent)" : "none"} stroke={(animatingId.id === item._id && animatingId.type === 'like') || item.isLiked ? "var(--color-accent)" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                     </svg>
                   </button>
@@ -142,7 +142,15 @@ const ReelFeed = ({ items = [], onLike, onSave, onCommentUpdate, emptyMessage = 
               <div className="reel-content">
                 <div className="reel-user-info">
                     <h3 className="reel-username">{item.partnerId?.name || 'Partner'}</h3>
-                    <button className="reel-follow-btn">Follow</button>
+                    <button 
+                        className={`reel-follow-btn ${item.isFollowing ? 'is-following' : ''}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (onFollow) onFollow(item);
+                        }}
+                    >
+                        {item.isFollowing ? 'Following' : 'Follow'}
+                    </button>
                 </div>
                 <p className="reel-description" title={item.description}>{item.description}</p>
                 {item.foodPartner && (

@@ -22,6 +22,19 @@ const Saved = () => {
             })
     }, [])
 
+    const likeVideo = async (item) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/food/like`, { foodId: item._id }, { withCredentials: true });
+            if (response.data.like) {
+                setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: (v.likeCount || 0) + 1, isLiked: true } : v));
+            } else {
+                setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: Math.max(0, (v.likeCount || 0) - 1), isLiked: false } : v));
+            }
+        } catch {
+            // noop
+        }
+    };
+
     const removeSaved = async (item) => {
         try {
             await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/food/save`, { foodId: item._id }, { withCredentials: true })
@@ -38,6 +51,7 @@ const Saved = () => {
     return (
         <ReelFeed
              items={videos}
+             onLike={likeVideo}
              onSave={removeSaved}
              onCommentUpdate={handleCommentUpdate}
             emptyMessage="No saved videos yet."

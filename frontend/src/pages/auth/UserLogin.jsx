@@ -31,6 +31,13 @@ const UserLogin = () => {
           <h1 id="user-login-title" className="auth-title">Welcome back</h1>
           <p className="auth-subtitle">Sign in to continue your food journey.</p>
         </header>
+
+        <nav className="auth-nav">
+          <span>Sign in as:</span>
+          <Link to="/user/login" className="auth-nav-link active">User</Link>
+          <span>•</span>
+          <Link to="/food-partner/login" className="auth-nav-link">Partner</Link>
+        </nav>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="email">Email</label>
