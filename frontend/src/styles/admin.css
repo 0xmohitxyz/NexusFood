@@ -161,6 +161,8 @@
   flex-shrink: 0;
   position: sticky; top: 0; height: 100dvh;
   box-shadow: var(--admin-shadow);
+  z-index: 1001;
+  transition: transform 0.3s ease;
 }
 
 .admin-sidebar-brand {
@@ -241,6 +243,8 @@
   padding: 28px 36px 20px;
   border-bottom: 1.5px solid var(--admin-border);
   background: var(--admin-surface);
+  display: flex;
+  align-items: center;
 }
 .admin-page-title { font-size: 1.5rem; font-weight: 800; margin: 0; color: var(--admin-text); }
 .admin-page-sub   { color: var(--admin-text-muted); font-size: .875rem; margin: 4px 0 0; }
@@ -353,14 +357,45 @@
 .admin-dropzone-icon { font-size: 1.4rem; }
 .admin-text-muted { color: var(--admin-text-muted); font-size: .8rem; }
 
+/* ─── Mobile Sidebar Overlay & Hamburger ─────────────────────────────────── */
+.admin-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--admin-accent);
+  margin-right: 15px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+}
+.admin-hamburger:hover { background: rgba(249,115,22,0.1); }
+
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .admin-sidebar { width: 64px; padding: 16px 8px; }
-  .admin-sidebar-brand span,
-  .admin-sidebar-label,
-  .admin-nav-item span:not(.admin-nav-icon),
-  .admin-logout-btn span { display: none; }
-  .admin-nav-item { justify-content: center; border-left: none !important; }
+  .admin-sidebar { 
+    position: fixed; 
+    top: 0; left: 0; bottom: 0; 
+    transform: translateX(-100%); 
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .admin-sidebar-overlay { display: block; pointer-events: none; }
+  .admin-sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+  
+  .admin-hamburger { display: block; }
+
   .admin-content { padding: 20px 16px; }
   .admin-topbar { padding: 20px 16px 16px; }
   .admin-form-row { flex-direction: column; }
