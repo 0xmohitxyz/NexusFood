@@ -6,6 +6,7 @@ import '../../styles/profile.css';
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
+    const [likedVideos, setLikedVideos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [modalData, setModalData] = useState({ isOpen: false, viewType: 'followers' });
     const navigate = useNavigate();
@@ -13,10 +14,13 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/user/profile`, {
-                    withCredentials: true
-                });
-                setUser(response.data.user);
+                const [profileRes, likesRes] = await Promise.all([
+                    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/user/profile`, { withCredentials: true }),
+                    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/food/like`, { withCredentials: true }).catch(() => ({ data: { likedFoods: [] } }))
+                ]);
+                
+                setUser(profileRes.data.user);
+                setLikedVideos(likesRes.data.likedFoods.map(like => like.food) || []);
                 setLoading(false);
             } catch (error) {
                 console.error("Failed to fetch profile", error);
@@ -52,7 +56,12 @@ const UserProfile = () => {
             <header className="profile-header">
                 <div className="profile-meta">
                     <div className="profile-info">
-                        <h1 className="profile-name">{user?.fullName}</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <h1 className="profile-name">{user?.fullName}</h1>
+                            <button className="btn-logout" onClick={handleLogout} style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                                Logout
+                            </button>
+                        </div>
                         <p className="profile-email">{user?.email}</p>
                         <p className="profile-joined">
                             Member since: {new Date(user?.joinedAt).toLocaleDateString()}
@@ -76,13 +85,28 @@ const UserProfile = () => {
                     </div>
                 </div>
             </header>
+            <hr className="profile-sep" />
+
+            <section className="profile-grid">
+                {likedVideos.map((video) => (
+                    video && (
+                        <div key={video._id} className="profile-grid-item">
+                            <video 
+                                src={video.video} 
+                                className="profile-grid-video"
+                                muted
+                                loop
+                                onMouseOver={event => event.target.play()}
+                                onMouseOut={event => event.target.pause()}
+                                playsInline
+                            />
+                        </div>
+                    )
+                ))}
+            </section>
             
-            <div className="profile-content">
-                <div className="profile-actions-footer">
-                    <button className="btn-logout" onClick={handleLogout}>
-                        Logout
-                    </button>
-                </div>
+            <div className="profile-content" style={{ marginTop: '30px' }}>
+                {/* Additional content could go here in the future */}
             </div>
 
             {user && (

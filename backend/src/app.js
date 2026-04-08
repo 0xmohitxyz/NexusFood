@@ -4,6 +4,7 @@ const authRoutes = require('./routes/auth.routes');
 const foodRoutes = require('./routes/food.routes');
 const foodPartnerRoutes = require('./routes/food-partner.routes');
 const followRoutes = require('./routes/follow.routes');
+const adminRoutes = require('./routes/admin.routes');
 const cors = require('cors');
 
 const app = express();
@@ -33,5 +34,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/food', foodRoutes);
 app.use('/api/food-partner', foodPartnerRoutes);
 app.use('/api/follow', followRoutes);
+app.use('/api/admin', adminRoutes);
 
 module.exports = app;

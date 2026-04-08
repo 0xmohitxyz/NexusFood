@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const CreateFood = () => {
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ category, setCategory ] = useState('');
+    const [ categories, setCategories ] = useState([]);
     const [ videoFile, setVideoFile ] = useState(null);
     const [ videoURL, setVideoURL ] = useState('');
     const [ fileError, setFileError ] = useState('');
@@ -23,6 +25,13 @@ const CreateFood = () => {
             console.error("Logout failed", error);
         }
     };
+
+    useEffect(() => {
+        // Load categories from backend
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/admin/categories`)
+            .then(res => setCategories(res.data.categories))
+            .catch(() => {});
+    }, []);
 
     useEffect(() => {
         if (!videoFile) {
@@ -66,6 +75,7 @@ const CreateFood = () => {
 
         formData.append('name', name);
         formData.append('description', description);
+        formData.append('category', category);
         formData.append("mama", videoFile);
 
         try {
@@ -82,7 +92,7 @@ const CreateFood = () => {
         }
     };
 
-    const isDisabled = useMemo(() => !name.trim() || !videoFile, [ name, videoFile ]);
+    const isDisabled = useMemo(() => !name.trim() || !category || !videoFile, [ name, category, videoFile ]);
 
     return (
         <div className="create-food-page">
@@ -164,6 +174,33 @@ const CreateFood = () => {
                             onChange={(e) => setName(e.target.value)}
                             required
                         />
+                    </div>
+
+                    <div className="field-group">
+                        <label htmlFor="foodCategory">Category</label>
+                        <select
+                            id="foodCategory"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Choose a category</option>
+                            {categories.length > 0 ? (
+                                categories.map(cat => (
+                                    <option key={cat._id} value={cat.name}>{cat.name}</option>
+                                ))
+                            ) : (
+                                // Fallback hardcoded options
+                                <>
+                                    <option value="Main Course">Main Course</option>
+                                    <option value="Fast Food">Fast Food</option>
+                                    <option value="Desserts">Desserts</option>
+                                    <option value="Beverages">Beverages</option>
+                                    <option value="Healthy">Healthy</option>
+                                    <option value="Snacks">Snacks</option>
+                                </>
+                            )}
+                        </select>
                     </div>
 
                     <div className="field-group">

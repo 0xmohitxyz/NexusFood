@@ -13,6 +13,10 @@ const foodSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    category: {
+        type: String,
+        required: true,
+    },
     foodPartner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "foodpartner"

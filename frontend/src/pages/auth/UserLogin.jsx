@@ -37,6 +37,8 @@ const UserLogin = () => {
           <Link to="/user/login" className="auth-nav-link active">User</Link>
           <span>•</span>
           <Link to="/food-partner/login" className="auth-nav-link">Partner</Link>
+          <span>•</span>
+          <Link to="/admin/login" className="auth-nav-link">Admin</Link>
         </nav>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">

@@ -50,5 +50,9 @@ router.get('/comments/:foodId',
 )
 
 
+router.get('/like',
+    authMiddleware.authUserMiddleware,
+    foodController.getLikedFood
+)
 
 module.exports = router

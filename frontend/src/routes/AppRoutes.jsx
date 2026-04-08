@@ -11,6 +11,8 @@ import BottomNav from '../components/BottomNav';
 import CreateFood from '../pages/foodpartner/CreateFood';
 import Profile from '../pages/foodpartner/Profile';
 import UserProfile from '../pages/general/UserProfile';
+import AdminLogin from '../pages/admin/AdminLogin';
+import AdminDashboard from '../pages/admin/AdminDashboard';
 
 
 const AppRoutes = () => {
@@ -27,9 +29,12 @@ const AppRoutes = () => {
                 <Route path="/profile" element={<><UserProfile /><BottomNav /></>} />
                 <Route path="/create-food" element={<><CreateFood /><BottomNav /></>} />
                 <Route path="/food-partner/:id" element={<Profile />} />
+                {/* Admin */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
         </Router>
     )
 }
 
-export default AppRoutes
+export default AppRoutes

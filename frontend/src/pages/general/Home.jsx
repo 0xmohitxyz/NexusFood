@@ -73,8 +73,17 @@ const Home = () => {
         }
     }
 
-    const categories = ["All", "Spicy", "Dessert", "Healthy", "Beverages", "Street Food"];
+    const [categories, setCategories] = useState(["All"]);
     const [selectedCategory, setSelectedCategory] = useState("All");
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/admin/categories`)
+            .then(res => {
+                const names = res.data.categories.map(c => c.name);
+                setCategories(["All", ...names]);
+            })
+            .catch(() => {}); // silently keep "All" if fetch fails
+    }, []);
 
     const handleCommentUpdate = (foodId, newCount) => {
         setVideos((prev) => prev.map((v) => v._id === foodId ? { ...v, commentCount: newCount } : v));

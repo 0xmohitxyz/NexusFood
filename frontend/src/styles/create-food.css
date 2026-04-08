@@ -83,7 +83,8 @@
 /* Inputs */
 .field-group input[type="text"],
 .field-group input[type="file"],
-.field-group textarea {
+.field-group textarea,
+.field-group select {
   appearance: none;
   border: 1px solid var(--color-border);
   background: var(--color-surface-alt);
@@ -98,7 +99,8 @@
 .field-group textarea { resize: vertical; min-height: 96px; }
 
 .field-group input:focus-visible,
-.field-group textarea:focus-visible {
+.field-group textarea:focus-visible,
+.field-group select:focus-visible {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 55%, transparent);
   background: var(--color-surface);
@@ -213,7 +215,8 @@
 /* Smooth theme transitions */
 .create-food-card,
 .field-group input,
-.field-group textarea { transition: background 200ms ease, color 200ms ease, border-color 200ms ease; }
+.field-group textarea,
+.field-group select { transition: background 200ms ease, color 200ms ease, border-color 200ms ease; }
 
 @keyframes spin {
   100% {

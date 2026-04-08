@@ -13,6 +13,7 @@ async function createFood(req, res) {
     const foodItem = await foodModel.create({
         name: req.body.name,
         description: req.body.description,
+        category: req.body.category,
         video: fileUploadResult.url,
         foodPartner: req.foodPartner._id
     })
@@ -172,6 +173,21 @@ async function getComments(req, res) {
 }
 
 
+async function getLikedFood(req, res) {
+    const user = req.user;
+    
+    const likedFoods = await likeModel.find({ user: user._id }).populate('food').sort({ createdAt: -1 });
+
+    if (!likedFoods || likedFoods.length === 0) {
+        return res.status(404).json({ message: "No liked foods found" });
+    }
+
+    res.status(200).json({
+        message: "Liked foods retrieved successfully",
+        likedFoods
+    });
+}
+
 module.exports = {
     createFood,
     getFoodItems,
@@ -179,5 +195,6 @@ module.exports = {
     saveFood,
     getSaveFood,
     commentFood,
-    getComments
+    getComments,
+    getLikedFood
 }
