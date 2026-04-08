@@ -104,9 +104,10 @@ const UserProfile = () => {
                     )
                 ))}
             </section>
-            
-            <div className="profile-content" style={{ marginTop: '30px' }}>
-                {/* Additional content could go here in the future */}
+            <div className="profile-content" style={{ marginTop: '30px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
+                <button className="auth-submit" style={{ maxWidth: '200px' }} onClick={() => navigate('/orders')}>
+                    View My Orders
+                </button>
             </div>
 
             {user && (

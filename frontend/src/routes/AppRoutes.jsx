@@ -13,6 +13,9 @@ import Profile from '../pages/foodpartner/Profile';
 import UserProfile from '../pages/general/UserProfile';
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+import Shop from '../pages/general/Shop';
+import Checkout from '../pages/general/Checkout';
+import MyOrders from '../pages/general/MyOrders';
 
 
 const AppRoutes = () => {
@@ -29,6 +32,11 @@ const AppRoutes = () => {
                 <Route path="/profile" element={<><UserProfile /><BottomNav /></>} />
                 <Route path="/create-food" element={<><CreateFood /><BottomNav /></>} />
                 <Route path="/food-partner/:id" element={<Profile />} />
+                
+                {/* Shop Routes */}
+                <Route path="/shop" element={<><Shop /><BottomNav /></>} />
+                <Route path="/shop/checkout" element={<Checkout />} />
+                <Route path="/orders" element={<><MyOrders /><BottomNav /></>} />
                 {/* Admin */}
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />

@@ -5,6 +5,8 @@ import UserManagement from '../../components/admin/UserManagement';
 import FoodPartnerManagement from '../../components/admin/FoodPartnerManagement';
 import CategoryManagement from '../../components/admin/CategoryManagement';
 import FoodManagement from '../../components/admin/FoodManagement';
+import ShopInventoryManagement from '../../components/admin/ShopInventoryManagement';
+import OrderManagement from '../../components/admin/OrderManagement';
 import '../../styles/admin.css';
 
 const TABS = [
@@ -12,6 +14,8 @@ const TABS = [
     { id: 'partners', label: 'Food Partners', icon: '🍽️' },
     { id: 'categories', label: 'Categories', icon: '🏷️' },
     { id: 'foods', label: 'Create Food', icon: '🎬' },
+    { id: 'shop_inventory', label: 'Shop Inventory', icon: '🛍️' },
+    { id: 'orders', label: 'Customer Orders', icon: '📦' },
 ];
 
 const AdminDashboard = () => {
@@ -70,6 +74,8 @@ const AdminDashboard = () => {
                     {activeTab === 'partners' && <FoodPartnerManagement />}
                     {activeTab === 'categories' && <CategoryManagement />}
                     {activeTab === 'foods' && <FoodManagement />}
+                    {activeTab === 'shop_inventory' && <ShopInventoryManagement />}
+                    {activeTab === 'orders' && <OrderManagement />}
                 </div>
             </main>
         </div>
